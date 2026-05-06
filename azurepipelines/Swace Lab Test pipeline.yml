@@ -90,6 +90,8 @@ jobs:
           fi
         displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
         condition: in('${{ parameters.Scope }}', 'smoke', 'sanity', 'Patching', 'E2E', 'regression')
+        env:
+          TEST_ENV: '${{ parameters.environment }}'
 
       - task: PublishTestResults@2
         displayName: 'Publish test results'
