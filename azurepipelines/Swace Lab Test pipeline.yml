@@ -6,8 +6,11 @@ parameters:
     type: string
     default: 'UAT'
     values: 
-      - 'UAT'
       - 'DEV'
+      - 'UAT'
+      - 'QA'
+      - 'STG'
+      - 'PROD'
   - name: Scope
     displayName: 'Test Scope'
     type: string
@@ -16,6 +19,8 @@ parameters:
       - 'sanity'
       - 'smoke'
       - 'regression'
+      - 'Patching'
+      - 'E2E'
 
 pool:
   vmImage: 'ubuntu-latest'
