@@ -50,7 +50,7 @@ jobs:
           )
 
   - job: PlaywrightTests
-    displayName: 'Run Playwright Tests'
+    displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
     dependsOn: ValidateParameters
     condition: |
       not(
@@ -83,7 +83,7 @@ jobs:
         displayName: 'Generate BDD tests'
 
       - script: npx playwright test
-        displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
+        displayName: 'Run Playwright tests'
 
       - task: PublishTestResults@2
         displayName: 'Publish test results'
