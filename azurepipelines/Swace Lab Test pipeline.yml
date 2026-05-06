@@ -26,8 +26,32 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
+  - job: ValidateParameters
+    displayName: 'Validate Parameters'
+    steps:
+      - script: |
+          echo "##[error]E2E scope is not supported for DEV or QA environments."
+          exit 1
+        displayName: 'Block E2E on DEV/QA'
+        condition: |
+          and(
+            eq('${{ parameters.Scope }}', 'E2E'),
+            in('${{ parameters.environment }}', 'DEV', 'QA')
+          )
+
+      - script: |
+          echo "##[error]Regression scope is not supported for PROD environment."
+          exit 1
+        displayName: 'Block regression on PROD'
+        condition: |
+          and(
+            eq('${{ parameters.Scope }}', 'regression'),
+            eq('${{ parameters.environment }}', 'PROD')
+          )
+
   - job: PlaywrightTests
     displayName: 'Run Playwright Tests'
+    dependsOn: ValidateParameters
     condition: |
       not(
         or(
