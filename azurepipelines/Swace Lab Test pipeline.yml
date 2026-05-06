@@ -53,7 +53,7 @@ jobs:
           mergeTestResults: true
           failTaskOnFailedTests: true
 
-      - task: PublishHTMLReport@1
+      - task: JakubRumpca.azure-pipelines-html-report.PublishHtmlReport.PublishHtmlReport@1
         condition: always()
         inputs:
           reportDir: '$(System.DefaultWorkingDirectory)/playwright-report'
