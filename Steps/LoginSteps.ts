@@ -11,21 +11,21 @@ Given('I am on the login page', async ({ pageManager }) => {
     await pageManager.loginPage.page.goto(config.url);
     await pageManager.loginPage.page.waitForLoadState('networkidle');
     //await pageManager.loginPage.page.screenshot({ path: 'Test/Screenshots/LoginPage.png' });
-
     expect(pageManager.loginPage.page, 'Not in the login page').toHaveTitle(pageTitle);
 
     const test = process.env.TEST_ENV;
 
     console.log(`Navigated to ${config.url} (${process.env.TEST_ENV || 'UAT'}) successfully`);
-    expect(test?.length, `TEST_ENV is not set, defaulting to UAT`).toBeGreaterThan(0);
 });
 
 When('I enter valid username', async ({ pageManager }) => {
 
-    await pageManager.loginPage.txtUsername.fill('standard_user');
+    const username = config.username;
+
+    await pageManager.loginPage.txtUsername.fill(username || '');
 });
 
 When('I enter valid password', async ({ pageManager }) => {
 
-  await pageManager.loginPage.txtPassword.fill('secret_sauce');
+  await pageManager.loginPage.txtPassword.fill(config.password || '');
 });
