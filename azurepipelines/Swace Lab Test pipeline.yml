@@ -83,7 +83,12 @@ jobs:
         displayName: 'Generate BDD tests'
 
       - script: npx playwright test
-        displayName: 'Run Playwright tests'
+        displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
+        condition: eq('${{ parameters.Scope }}', 'regression')
+
+      - script: npx playwright test --grep "@${{ parameters.Scope }}"
+        displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
+        condition: in('${{ parameters.Scope }}', 'smoke', 'sanity', 'Patching', 'E2E')
 
       - task: PublishTestResults@2
         displayName: 'Publish test results'
