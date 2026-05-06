@@ -83,7 +83,7 @@ jobs:
         displayName: 'Generate BDD tests'
 
       - script: npx playwright test
-        displayName: 'Run Playwright tests'
+        displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
 
       - task: PublishTestResults@2
         displayName: 'Publish test results'
@@ -91,7 +91,6 @@ jobs:
         inputs:
           testResultsFormat: 'JUnit'
           testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/junit.xml'
-          testRunTitle: '${{ parameters.environment }} - ${{ parameters.Scope }}'
           mergeTestResults: true
           failTaskOnFailedTests: true
 
