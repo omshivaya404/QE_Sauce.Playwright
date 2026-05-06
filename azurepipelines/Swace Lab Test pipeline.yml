@@ -28,6 +28,19 @@ pool:
 jobs:
   - job: PlaywrightTests
     displayName: 'Run Playwright Tests'
+    condition: |
+      not(
+        or(
+          and(
+            eq('${{ parameters.Scope }}', 'E2E'),
+            in('${{ parameters.environment }}', 'DEV', 'QA')
+          ),
+          and(
+            eq('${{ parameters.Scope }}', 'regression'),
+            eq('${{ parameters.environment }}', 'PROD')
+          )
+        )
+      )
     steps:
       - checkout: self
 
