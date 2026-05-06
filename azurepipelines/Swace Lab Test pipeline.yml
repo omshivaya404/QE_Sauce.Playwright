@@ -43,6 +43,16 @@ jobs:
       - script: npx playwright test
         displayName: 'Run Playwright tests'
 
+      - task: PublishTestResults@2
+        displayName: 'Publish test results'
+        condition: always()
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/*.xml'
+          testRunTitle: '$(Parameters.environment) - $(Parameters.Scope)'
+          mergeTestResults: true
+          failTaskOnFailedTests: true
+
       - task: PublishBuildArtifacts@1
         condition: always()
         inputs:
