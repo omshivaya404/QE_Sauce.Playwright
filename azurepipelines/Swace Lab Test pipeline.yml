@@ -91,7 +91,7 @@ jobs:
         inputs:
           testResultsFormat: 'JUnit'
           testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/junit.xml'
-          testRunTitle: '$(Parameters.environment) - $(Parameters.Scope)'
+          testRunTitle: '${{ parameters.environment }} - ${{ parameters.Scope }}'
           mergeTestResults: true
           failTaskOnFailedTests: true
 
