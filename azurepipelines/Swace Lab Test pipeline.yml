@@ -53,17 +53,4 @@ jobs:
           mergeTestResults: true
           failTaskOnFailedTests: true
 
-      - task: LakshayKaushik.PublishHTMLReports.publishhtmlreport.publishhtmlreport@1
-        condition: always()
-        inputs:
-          reportDir: '$(System.DefaultWorkingDirectory)/playwright-report'
-          tabName: 'HTML Report'
-        displayName: 'Publish HTML Report'
-  
-      - task: PublishPipelineArtifact@1
-        condition: always()
-        inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/playwright-report'
-          artifact: 'playwright-report'
-          publishLocation: 'pipeline'
-        displayName: 'Publish Playwright HTML report artifact'
+
