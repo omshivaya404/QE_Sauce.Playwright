@@ -53,26 +53,9 @@ jobs:
           mergeTestResults: true
           failTaskOnFailedTests: true
 
-      - task: PublishPipelineArtifact@1
+      - task: PublishHtmlReport@1
         condition: always()
         inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/playwright-report'
-          artifact: 'HTML Report'
-          publishLocation: 'pipeline'
-        displayName: 'Publish HTML Report'
-
-      - task: PublishBuildArtifacts@1
-        condition: always()
-        inputs:
-          pathToPublish: '$(System.DefaultWorkingDirectory)/playwright-report'
-          artifactName: 'playwright-report'
-          publishLocation: 'Container'
-        displayName: 'Upload Playwright report'
-
-      - task: PublishBuildArtifacts@1
-        condition: always()
-        inputs:
-          pathToPublish: '$(System.DefaultWorkingDirectory)/test-results'
-          artifactName: 'test-results'
-          publishLocation: 'Container'
-        displayName: 'Upload test results'
+          reportDir: '$(System.DefaultWorkingDirectory)/playwright-report'
+          tabName: 'HTML Report'
+        displayName: 'HTML Report'
