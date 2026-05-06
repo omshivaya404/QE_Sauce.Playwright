@@ -48,10 +48,18 @@ jobs:
         condition: always()
         inputs:
           testResultsFormat: 'JUnit'
-          testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/*.xml'
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/junit.xml'
           testRunTitle: '$(Parameters.environment) - $(Parameters.Scope)'
           mergeTestResults: true
           failTaskOnFailedTests: true
+
+      - task: PublishPipelineArtifact@1
+        condition: always()
+        inputs:
+          targetPath: '$(System.DefaultWorkingDirectory)/playwright-report'
+          artifact: 'HTML Report'
+          publishLocation: 'pipeline'
+        displayName: 'Publish HTML Report'
 
       - task: PublishBuildArtifacts@1
         condition: always()
