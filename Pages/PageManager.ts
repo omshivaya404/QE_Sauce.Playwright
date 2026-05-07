@@ -5,7 +5,7 @@ export class PageManager {
 
     readonly loginPage: LoginPage;
 
-    constructor(page: Page) {
+    constructor(public page: Page) {
         this.loginPage = new LoginPage(page);
     }
 }

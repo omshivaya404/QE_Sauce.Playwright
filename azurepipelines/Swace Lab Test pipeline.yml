@@ -22,6 +22,9 @@ parameters:
       - 'Patching'
       - 'E2E'
 
+variables:
+  - group: playwright-secrets   # ADO Library > Variable Groups: WINDOWS_AUTH_USERNAME, WINDOWS_AUTH_PASSWORD
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -92,6 +95,8 @@ jobs:
         condition: in('${{ parameters.Scope }}', 'smoke', 'sanity', 'Patching', 'E2E', 'regression')
         env:
           TEST_ENV: '${{ parameters.environment }}'
+          WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
+          WINDOWS_AUTH_PASSWORD: $(WINDOWS_AUTH_PASSWORD)
 
       - task: PublishTestResults@2
         displayName: 'Publish test results'

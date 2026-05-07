@@ -29,3 +29,15 @@ When('I enter valid password', async ({ pageManager }) => {
 
   await pageManager.loginPage.txtPassword.fill(config.password || '');
 });
+
+Given('I logged in to TMPOE with Windows authentication', async ({ pageManager }) => {
+
+    //https://the-internet.herokuapp.com/basic_auth
+
+    //const page = await pageManager.appPage.newPage();
+    await pageManager.page.goto('https://the-internet.herokuapp.com/basic_auth');
+    await pageManager.page.waitForLoadState('networkidle');
+    const content = await pageManager.page.title();
+    expect(content).toContain('The Internet');
+
+});

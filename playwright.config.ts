@@ -37,12 +37,15 @@ export default defineConfig({
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
     baseURL: config.url,
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     screenshot: 'on',
+    httpCredentials: process.env.WINDOWS_AUTH_USERNAME
+      ? {
+          username: process.env.WINDOWS_AUTH_USERNAME,
+          password: process.env.WINDOWS_AUTH_PASSWORD || ''
+        }
+      : undefined,
   },
 
   /* Configure projects for major browsers */

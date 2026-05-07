@@ -7,9 +7,13 @@ type PageObjects = {
 }
 
 export const test = base.extend<PageObjects>({
-    pageManager: async ({page}, use) => {
-        const pageManager = new PageManager(page);
+    pageManager: async ({browser}, use) => {
+
+        const browserContext = await browser.newContext();
+        const newPage = await browserContext.newPage();
+        const pageManager = new PageManager(newPage);
         await use(pageManager);
+        //await browserContext.close();
     }
 });
 
