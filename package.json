@@ -3,7 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:sanity": "npx playwright test --grep \"@smoke|@sanity\"",
+    "test:regression": "npx playwright test \"Account Services Manager\" --workers=5 --fully-parallel && npx playwright test \"Requests\" --workers=11 --fully-parallel",
+    "test:e2e": "npx playwright test --grep @E2E",
+    "report": "npx playwright show-report"
+
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

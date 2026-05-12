@@ -85,14 +85,8 @@ jobs:
       - script: npx bddgen
         displayName: 'Generate BDD tests'
 
-      - script: |
-          if [ "${{ parameters.Scope }}" = "regression" ]; then
-            npx playwright test --workers=10
-          else
-            npx playwright test --grep "@${{ parameters.Scope }}"
-          fi
+      - script: npm run test:${{ parameters.Scope }}
         displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
-        condition: in('${{ parameters.Scope }}', 'smoke', 'sanity', 'Patching', 'E2E', 'regression')
         env:
           TEST_ENV: '${{ parameters.environment }}'
           WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
@@ -106,5 +100,3 @@ jobs:
           testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/junit.xml'
           mergeTestResults: true
           failTaskOnFailedTests: true
-
-
