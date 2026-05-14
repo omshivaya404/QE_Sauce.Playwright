@@ -37,12 +37,12 @@ reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }]],
     baseURL: config.url,
     trace: 'on-first-retry',
     screenshot: 'on',
-    // httpCredentials: process.env.WINDOWS_AUTH_USERNAME
-    //   ? {
-    //       username: process.env.WINDOWS_AUTH_USERNAME,
-    //       password: process.env.WINDOWS_AUTH_PASSWORD || ''
-    //     }
-    //   : undefined,
+    httpCredentials: process.env.WINDOWS_AUTH_USERNAME
+      ? {
+          username: process.env.WINDOWS_AUTH_USERNAME,
+          password: process.env.WINDOWS_AUTH_PASSWORD || ''
+        }
+      : undefined,
   },
 
   /* Configure projects for major browsers */
