@@ -23,7 +23,7 @@ const testDir = defineBddConfig({
 export default defineConfig({
   testDir:testDir,
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  //fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -31,21 +31,18 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   //workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ['html'],
-    ['junit', { outputFile: 'test-results/junit.xml' }],
-  ],
+reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: config.url,
     trace: 'on-first-retry',
     screenshot: 'on',
-    httpCredentials: process.env.WINDOWS_AUTH_USERNAME
-      ? {
-          username: process.env.WINDOWS_AUTH_USERNAME,
-          password: process.env.WINDOWS_AUTH_PASSWORD || ''
-        }
-      : undefined,
+    // httpCredentials: process.env.WINDOWS_AUTH_USERNAME
+    //   ? {
+    //       username: process.env.WINDOWS_AUTH_USERNAME,
+    //       password: process.env.WINDOWS_AUTH_PASSWORD || ''
+    //     }
+    //   : undefined,
   },
 
   /* Configure projects for major browsers */

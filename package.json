@@ -7,7 +7,11 @@
     "test": "npx playwright test",
     "test:smoke": "npx playwright test --grep @smoke",
     "test:sanity": "npx playwright test --grep \"@smoke|@sanity\"",
-    "test:regression": "npx playwright test \"Account Services Manager\" --workers=5 --fully-parallel && npx playwright test \"Requests\" --workers=11 --fully-parallel",
+    "test:Patching": "npx playwright test --grep @Patching",
+    "test:regression:requests": "npx playwright test \"Requests\" --workers=11 --fully-parallel",
+    "test:regression:account-services-manager": "npx playwright test \"Account Services Manager\" --workers=5 --fully-parallel",
+    "test:regression:merge": "npx playwright test --workers=3 --fully-parallel",
+    "test:regression": "npm run test:regression:requests && npm run test:regression:account-services-manager ",
     "test:e2e": "npx playwright test --grep @E2E",
     "report": "npx playwright show-report"
 
