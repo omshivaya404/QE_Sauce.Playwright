@@ -105,6 +105,6 @@ jobs:
         displayName: 'Publish Playwright HTML report'
         condition: always()
         inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/playwright-report'
+          targetPath: 'playwright-report'
           artifact: 'playwright-report'
           publishLocation: 'pipeline'
