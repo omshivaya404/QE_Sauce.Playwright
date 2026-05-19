@@ -97,6 +97,6 @@ jobs:
         condition: always()
         inputs:
           testResultsFormat: 'JUnit'
-          testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/e2e-junit-results.xml'
+          testResultsFiles: '**/test-results/e2e-junit-results.xml'
           mergeTestResults: true
           failTaskOnFailedTests: true
