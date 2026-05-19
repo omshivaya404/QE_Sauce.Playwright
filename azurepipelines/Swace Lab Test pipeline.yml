@@ -97,6 +97,12 @@ jobs:
           WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
           WINDOWS_AUTH_PASSWORD: $(WINDOWS_AUTH_PASSWORD)
 
+      - script: |
+          echo "##vso[task.logissue type=error]${{ parameters.Scope }} tests failed in ${{ parameters.environment }}."
+          echo "##vso[task.logissue type=warning]Check Publish test results and the playwright-report artifact for details."
+        displayName: 'Report failed test scope'
+        condition: failed()
+
       - task: PublishTestResults@2
         displayName: 'Publish test results'
         condition: always()
