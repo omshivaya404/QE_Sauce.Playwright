@@ -90,7 +90,7 @@ jobs:
         displayName: 'Clean blob report folder'
         condition: eq('${{ parameters.Scope }}', 'regression')
 
-      ${{ if eq(parameters.Scope, 'regression') }}:
+      - ${{ if eq(parameters.Scope, 'regression') }}:
         - template: templates/run-test-step.yml
           parameters:
             displayName: 'Run smoke test'
@@ -112,7 +112,7 @@ jobs:
             condition: succeeded()
             environment: '${{ parameters.environment }}'
 
-      ${{ if ne(parameters.Scope, 'regression') }}:
+      - ${{ if ne(parameters.Scope, 'regression') }}:
         - template: templates/run-test-step.yml
           parameters:
             displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
