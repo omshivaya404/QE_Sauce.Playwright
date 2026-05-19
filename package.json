@@ -8,10 +8,10 @@
     "test:smoke": "npx playwright test --grep @smoke",
     "test:sanity": "npx playwright test --grep \"@smoke|@sanity\"",
     "test:Patching": "npx playwright test --grep @Patching",
-    "test:regression:requests": "npx playwright test \"Requests\" --workers=11 --fully-parallel --reporter=blob --blob-report-dir=blob-report/requests",
-    "test:regression:account-services-manager": "npx playwright test \"Account Services Manager\" --workers=5 --fully-parallel --reporter=blob --blob-report-dir=blob-report/account-services-manager",
+    "test:regression:requests": "npx playwright test \"Requests\" --workers=11 --fully-parallel",
+    "test:regression:account-services-manager": "npx playwright test \"Account Services Manager\" --workers=5 --fully-parallel",
     "test:regression:merge": "npx playwright merge-reports --reporter=html ./blob-report",
-    "test:regression": "npm run test:regression:requests && npm run test:regression:account-services-manager && npm run test:regression:merge",
+    "test:regression": "npx playwright test \"Requests\" \"Account Services Manager\" --workers=8 --fully-parallel",
     "test:e2e": "npx playwright test --grep @E2E",
     "report": "npx playwright show-report"
   },
