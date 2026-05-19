@@ -86,10 +86,6 @@ jobs:
         displayName: 'Generate BDD tests'
 
       # 👇 only runs when scope is regression to clean stale blob files
-      - script: rm -rf blob-report
-        displayName: 'Clean blob report folder'
-        condition: eq('${{ parameters.Scope }}', 'regression')
-
       - ${{ if eq(parameters.Scope, 'regression') }}:
         - template: templates/run-test-step.yml
           parameters:
