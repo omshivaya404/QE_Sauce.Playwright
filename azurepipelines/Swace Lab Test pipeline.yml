@@ -1,4 +1,4 @@
-name: '$(environment)-$(Scope)-$(Date:yyMMdd)$(Rev:.r)'
+name: 'Automated Tests - $(environment) - $(Scope) - $(Date:yyMMdd)$(Rev:.r)'
 trigger: none
 parameters:
   - name: environment
