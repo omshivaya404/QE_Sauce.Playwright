@@ -60,3 +60,9 @@ When('I navigate to DGB Site', async ({ pageManager }) => {
   
 
 });
+
+When('actual is {string} and expected is {string}', async ({ pageManager }, arg1: string, arg2: string) => {
+
+  expect(arg1, 'Argument mismatch').toBe(arg2);
+
+});
