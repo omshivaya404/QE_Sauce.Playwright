@@ -8,6 +8,7 @@ Scenario: Successful login with valid credentials - test 1
     Given I am on the login page
     When I enter valid username 
     And I enter valid password
+    And actual is '2' and expected is '1'
 
 Scenario: Successful login with valid credentials - test 2
     Given I am on the login page
