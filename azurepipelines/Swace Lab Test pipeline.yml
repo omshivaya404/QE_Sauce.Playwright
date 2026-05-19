@@ -85,6 +85,11 @@ jobs:
       - script: npx bddgen
         displayName: 'Generate BDD tests'
 
+      # 👇 only runs when scope is regression to clean stale blob files
+      - script: rm -rf blob-report
+        displayName: 'Clean blob report folder'
+        condition: eq('${{ parameters.Scope }}', 'regression')
+
       - script: npm run test:${{ parameters.Scope }}
         displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
         env:
@@ -101,10 +106,11 @@ jobs:
           searchFolder: '$(System.DefaultWorkingDirectory)'
           mergeTestResults: true
           failTaskOnFailedTests: true
+
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Playwright HTML report'
         condition: always()
         inputs:
-          targetPath: 'playwright-report'
+          targetPath: '$(System.DefaultWorkingDirectory)/playwright-report'
           artifact: 'playwright-report'
           publishLocation: 'pipeline'
