@@ -42,7 +42,7 @@ jobs:
         displayName: 'Block E2E on DEV/QA'
         condition: |
           and(
-            eq('${{ parameters.Scope }}', 'E2E'),
+            eq('${{ lower(parameters.Scope) }}', 'e2e'),
             in('${{ parameters.environment }}', 'DEV', 'QA')
           )
 
@@ -52,7 +52,7 @@ jobs:
         displayName: 'Block regression on PROD'
         condition: |
           and(
-            eq('${{ parameters.Scope }}', 'regression'),
+            eq('${{ lower(parameters.Scope) }}', 'regression'),
             eq('${{ parameters.environment }}', 'PROD')
           )
 
@@ -63,11 +63,11 @@ jobs:
       not(
         or(
           and(
-            eq('${{ parameters.Scope }}', 'E2E'),
+            eq('${{ lower(parameters.Scope) }}', 'e2e'),
             in('${{ parameters.environment }}', 'DEV', 'QA')
           ),
           and(
-            eq('${{ parameters.Scope }}', 'regression'),
+            eq('${{ lower(parameters.Scope) }}', 'regression'),
             eq('${{ parameters.environment }}', 'PROD')
           )
         )
@@ -90,7 +90,7 @@ jobs:
         displayName: 'Generate BDD tests'
 
       # 👇 only runs when scope is regression to clean stale blob files
-      - ${{ if eq(parameters.Scope, 'regression') }}:
+      - ${{ if eq(lower(parameters.Scope), 'regression') }}:
         - template: templates/run-test-step.yml
           parameters:
             displayName: 'Run smoke test'
@@ -112,11 +112,11 @@ jobs:
             condition: succeeded()
             environment: '${{ parameters.environment }}'
 
-      - ${{ if ne(parameters.Scope, 'regression') }}:
+      - ${{ if ne(lower(parameters.Scope), 'regression') }}:
         - template: templates/run-test-step.yml
           parameters:
             displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
-            script: 'npm run test:${{ parameters.Scope }}'
+            script: 'npm run test:${{ lower(parameters.Scope) }}'
             condition: succeeded()
             environment: '${{ parameters.environment }}'
 
