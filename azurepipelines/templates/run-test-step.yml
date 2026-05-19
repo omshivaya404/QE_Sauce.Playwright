@@ -1,0 +1,18 @@
+parameters:
+  - name: displayName
+    type: string
+  - name: script
+    type: string
+  - name: condition
+    type: string
+  - name: environment
+    type: string
+
+steps:
+  - script: ${{ parameters.script }}
+    displayName: ${{ parameters.displayName }}
+    condition: ${{ parameters.condition }}
+    env:
+      TEST_ENV: ${{ parameters.environment }}
+      WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
+      WINDOWS_AUTH_PASSWORD: $(WINDOWS_AUTH_PASSWORD)

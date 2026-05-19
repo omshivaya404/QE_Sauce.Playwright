@@ -90,28 +90,33 @@ jobs:
         displayName: 'Clean blob report folder'
         condition: eq('${{ parameters.Scope }}', 'regression')
 
-      - script: npm run test:smoke
-        displayName: 'Run smoke gate'
-        condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
-        env: &testEnv
-          TEST_ENV: '${{ parameters.environment }}'
-          WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
-          WINDOWS_AUTH_PASSWORD: $(WINDOWS_AUTH_PASSWORD)
+      - template: templates/run-test-step.yml
+        parameters:
+          displayName: 'Run smoke gate'
+          script: 'npm run test:smoke'
+          condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
+          environment: '${{ parameters.environment }}'
 
-      - script: npm run test:sanity-only
-        displayName: 'Run sanity gate'
-        condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
-        env: *testEnv
+      - template: templates/run-test-step.yml
+        parameters:
+          displayName: 'Run sanity gate'
+          script: 'npm run test:sanity-only'
+          condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
+          environment: '${{ parameters.environment }}'
 
-      - script: npx playwright test "Requests" "Account Services Manager" --workers=8 --fully-parallel
-        displayName: 'Run regression suites'
-        condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
-        env: *testEnv
+      - template: templates/run-test-step.yml
+        parameters:
+          displayName: 'Run regression suites'
+          script: 'npx playwright test "Requests" "Account Services Manager" --workers=8 --fully-parallel'
+          condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
+          environment: '${{ parameters.environment }}'
 
-      - script: npm run test:${{ parameters.Scope }}
-        displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
-        condition: and(succeeded(), ne('${{ parameters.Scope }}', 'regression'))
-        env: *testEnv
+      - template: templates/run-test-step.yml
+        parameters:
+          displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
+          script: 'npm run test:${{ parameters.Scope }}'
+          condition: and(succeeded(), ne('${{ parameters.Scope }}', 'regression'))
+          environment: '${{ parameters.environment }}'
 
       - task: PublishTestResults@2
         displayName: 'Publish test results'
