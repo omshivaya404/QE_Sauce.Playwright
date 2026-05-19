@@ -53,7 +53,7 @@ jobs:
           )
 
   - job: PlaywrightTests
-    displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
+    displayName: 'Playwright Tests'
     dependsOn: ValidateParameters
     condition: |
       not(
@@ -92,21 +92,21 @@ jobs:
 
       - template: templates/run-test-step.yml
         parameters:
-          displayName: 'Run smoke gate'
+          displayName: 'Run smoke test'
           script: 'npm run test:smoke'
           condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
           environment: '${{ parameters.environment }}'
 
       - template: templates/run-test-step.yml
         parameters:
-          displayName: 'Run sanity gate'
+          displayName: 'Run sanity test'
           script: 'npm run test:sanity-only'
           condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
           environment: '${{ parameters.environment }}'
 
       - template: templates/run-test-step.yml
         parameters:
-          displayName: 'Run regression suites'
+          displayName: 'Run Regression Test'
           script: 'npx playwright test "Requests" "Account Services Manager" --workers=8 --fully-parallel'
           condition: and(succeeded(), eq('${{ parameters.Scope }}', 'regression'))
           environment: '${{ parameters.environment }}'
