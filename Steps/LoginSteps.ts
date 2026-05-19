@@ -23,6 +23,7 @@ When('I enter valid username', async ({ pageManager }) => {
     const username = config.username;
 
     await pageManager.loginPage.txtUsername.fill(username || '');
+    //branch two
 });
 
 When('I enter valid password', async ({ pageManager }) => {
@@ -39,5 +40,23 @@ Given('I logged in to TMPOE with Windows authentication', async ({ pageManager }
     await pageManager.page.waitForLoadState('networkidle');
     const content = await pageManager.page.title();
     expect(content).toContain('The Internet');
+
+    //I have changed this.
+    //changed 
+});
+
+When('I navigate to DGB Site', async ({ pageManager }) => {
+
+    const url = 'https://account.microsoft.com/account';
+    await pageManager.page.goto(url);
+    const signInButton = pageManager.page.getByRole('button', { name: 'Sign in' });
+    await expect(signInButton).toBeVisible();
+    await signInButton.click();
+
+    await expect(pageManager.page).toHaveTitle('Sign in to your account');
+    const emailInput = pageManager.page.getByLabel('Email, phone, or Skype');
+    await emailInput.fill('omshivaya404@gmail.com');
+    await pageManager.page.getByRole('button', { name: 'Next' }).click();
+  
 
 });

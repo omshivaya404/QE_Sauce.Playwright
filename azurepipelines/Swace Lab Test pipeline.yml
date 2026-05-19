@@ -97,6 +97,14 @@ jobs:
         condition: always()
         inputs:
           testResultsFormat: 'JUnit'
-          testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/junit.xml'
+          testResultsFiles: 'test-results/junit.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)'
           mergeTestResults: true
           failTaskOnFailedTests: true
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Playwright HTML report'
+        condition: always()
+        inputs:
+          targetPath: '$(System.DefaultWorkingDirectory)/playwright-report'
+          artifact: 'playwright-report'
+          publishLocation: 'pipeline'
