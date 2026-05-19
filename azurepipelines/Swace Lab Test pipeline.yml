@@ -90,18 +90,93 @@ jobs:
         displayName: 'Clean blob report folder'
         condition: eq('${{ parameters.Scope }}', 'regression')
 
-      - script: npm run test:${{ parameters.Scope }}
-        displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
+      - script: |
+          echo "##vso[task.setvariable variable=SmokeStatus]SKIPPED"
+          echo "##vso[task.setvariable variable=SanityStatus]SKIPPED"
+          echo "##vso[task.setvariable variable=RegressionStatus]SKIPPED"
+        displayName: 'Initialize regression stage status'
+        condition: eq('${{ parameters.Scope }}', 'regression')
+
+      - script: |
+          npm run test:smoke
+          if [ $? -eq 0 ]; then
+            echo "##vso[task.setvariable variable=SmokeStatus]PASSED"
+          else
+            echo "##vso[task.setvariable variable=SmokeStatus]FAILED"
+          fi
+          exit 0
+        displayName: 'Run smoke gate'
+        condition: eq('${{ parameters.Scope }}', 'regression')
         env:
           TEST_ENV: '${{ parameters.environment }}'
           WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
           WINDOWS_AUTH_PASSWORD: $(WINDOWS_AUTH_PASSWORD)
 
       - script: |
+          npm run test:sanity-only
+          if [ $? -eq 0 ]; then
+            echo "##vso[task.setvariable variable=SanityStatus]PASSED"
+          else
+            echo "##vso[task.setvariable variable=SanityStatus]FAILED"
+          fi
+          exit 0
+        displayName: 'Run sanity gate'
+        condition: and(eq('${{ parameters.Scope }}', 'regression'), eq(variables['SmokeStatus'], 'PASSED'))
+        env:
+          TEST_ENV: '${{ parameters.environment }}'
+          WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
+          WINDOWS_AUTH_PASSWORD: $(WINDOWS_AUTH_PASSWORD)
+
+      - script: |
+          npx playwright test "Requests" "Account Services Manager" --workers=8 --fully-parallel
+          if [ $? -eq 0 ]; then
+            echo "##vso[task.setvariable variable=RegressionStatus]PASSED"
+          else
+            echo "##vso[task.setvariable variable=RegressionStatus]FAILED"
+          fi
+          exit 0
+        displayName: 'Run regression suites'
+        condition: and(eq('${{ parameters.Scope }}', 'regression'), eq(variables['SmokeStatus'], 'PASSED'), eq(variables['SanityStatus'], 'PASSED'))
+        env:
+          TEST_ENV: '${{ parameters.environment }}'
+          WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
+          WINDOWS_AUTH_PASSWORD: $(WINDOWS_AUTH_PASSWORD)
+
+      - script: npm run test:${{ parameters.Scope }}
+        displayName: 'Execute Tests (${{ parameters.environment }} - ${{ parameters.Scope }})'
+        condition: ne('${{ parameters.Scope }}', 'regression')
+        env:
+          TEST_ENV: '${{ parameters.environment }}'
+          WINDOWS_AUTH_USERNAME: $(WINDOWS_AUTH_USERNAME)
+          WINDOWS_AUTH_PASSWORD: $(WINDOWS_AUTH_PASSWORD)
+
+      - script: |
+          echo "Smoke test $(SmokeStatus)."
+          echo "Sanity test $(SanityStatus)."
+          echo "Regression test $(RegressionStatus)."
+
+          if [ "$(SmokeStatus)" != "PASSED" ]; then
+            echo "##vso[task.logissue type=error]Smoke test failed in ${{ parameters.environment }}."
+            exit 1
+          fi
+
+          if [ "$(SanityStatus)" != "PASSED" ]; then
+            echo "##vso[task.logissue type=error]Sanity test failed in ${{ parameters.environment }}."
+            exit 1
+          fi
+
+          if [ "$(RegressionStatus)" != "PASSED" ]; then
+            echo "##vso[task.logissue type=error]Regression test failed in ${{ parameters.environment }}."
+            exit 1
+          fi
+        displayName: 'Report failed test scope'
+        condition: eq('${{ parameters.Scope }}', 'regression')
+
+      - script: |
           echo "##vso[task.logissue type=error]${{ parameters.Scope }} tests failed in ${{ parameters.environment }}."
           echo "##vso[task.logissue type=warning]Check Publish test results and the playwright-report artifact for details."
-        displayName: 'Report failed test scope'
-        condition: failed()
+        displayName: 'Report failed test scope (non-regression)'
+        condition: and(ne('${{ parameters.Scope }}', 'regression'), failed())
 
       - task: PublishTestResults@2
         displayName: 'Publish test results'
