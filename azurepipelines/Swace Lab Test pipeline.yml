@@ -1,4 +1,4 @@
-name: Swace Lab Test pipeline
+name: '$(environment) $(Scope) - $(Date:yyyy-MM-dd)$(Rev:.r)'
 trigger: none
 parameters:
   - name: environment
