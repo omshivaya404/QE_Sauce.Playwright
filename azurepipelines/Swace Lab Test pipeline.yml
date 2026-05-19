@@ -1,4 +1,4 @@
-name: '$(environment) $(Scope) - $(Date:yyyy-MM-dd)$(Rev:.r)'
+name: 'Execute automated test - $(environment) - $(Scope) - $(Date:yyyy-MM-dd)$(Rev:.r)'
 trigger: none
 parameters:
   - name: environment
@@ -14,11 +14,11 @@ parameters:
   - name: Scope
     displayName: 'Test Scope'
     type: string
-    default: 'sanity'
+    default: 'Sanity'
     values:
-      - 'sanity'
-      - 'smoke'
-      - 'regression'
+      - 'Sanity'
+      - 'Smoke'
+      - 'Regression'
       - 'Patching'
       - 'E2E'
 
