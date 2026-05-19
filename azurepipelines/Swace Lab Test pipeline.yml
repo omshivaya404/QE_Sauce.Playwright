@@ -23,6 +23,10 @@ parameters:
       - 'E2E'
 
 variables:
+  - name: environment
+    value: ${{ parameters.environment }}
+  - name: Scope
+    value: ${{ parameters.Scope }}
   - group: playwright-secrets   # ADO Library > Variable Groups: WINDOWS_AUTH_USERNAME, WINDOWS_AUTH_PASSWORD
 
 pool:
